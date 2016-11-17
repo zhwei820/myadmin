@@ -6,8 +6,8 @@ from django.views.static import serve as serve_media
 import xadmin
 xadmin.autodiscover()
 
-from xadmin.plugins import xversion
-xversion.register_models()
+# from xadmin.plugins import xversion
+# xversion.register_models()
 
 urlpatterns = [
     url(r'^comments/', include('django_comments.urls')),

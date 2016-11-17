@@ -167,6 +167,8 @@ INSTALLED_APPS = (
 
     'app',
     'host',
+    
+    'django_admin_generator',
 )
 
 

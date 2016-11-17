@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from django.db import models
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
@@ -5,7 +7,13 @@ from mptt.models import MPTTModel
 
 class Continent(models.Model):
     name = models.CharField(max_length=256)
-    order = models.PositiveIntegerField()
+    order = models.IntegerField()
+    file = models.CharField(max_length=100)
+    pay_status = models.SmallIntegerField(u"系统平台", default=2,
+                                        choices=OS_PLATFORM_CHOICES,
+                                        db_index=True)
+    ctime = models.DateTimeField(u"创建时间", auto_now_add=True, db_index=True)
+    utime = models.DateTimeField(u"更新时间", auto_now=True)
 
     def __unicode__(self):
         return self.name

@@ -6,7 +6,16 @@ from . import models
 
 class ContinentAdmin(admin.ModelAdmin):
 
-    list_display = (u'id', 'name', 'order')
+    list_display = (
+        u'id',
+        'name',
+        'order',
+        'file',
+        'pay_status',
+        'ctime',
+        'utime',
+    )
+    list_filter = ('ctime', 'utime')
     search_fields = ('name',)
 
 

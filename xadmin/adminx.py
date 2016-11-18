@@ -1,3 +1,4 @@
+# coding=utf-8
 import xadmin
 from models import UserSettings, Log
 from xadmin.layout import *
@@ -19,11 +20,13 @@ class LogAdmin(object):
             return "<a href='%s'>%s</a>" % (admin_url, _('Admin Object'))
         else:
             return ''
-    link.short_description = ""
+    link.short_description = "操作"
     link.allow_tags = True
     link.is_column = False
 
-    list_display = ('action_time', 'user', 'ip_addr', '__str__', 'link')
+    list_display = ('action_time', 'user', 'ip_addr', '__str__', 'content_type', 'object_id', 'object_repr', 'action_flag', 'message', 'link')
+
+
     list_filter = ['user', 'action_time']
     search_fields = ['ip_addr', 'message']
     model_icon = 'fa fa-cog'

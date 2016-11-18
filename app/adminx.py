@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+# coding=utf-8
 import xadmin
 from xadmin import views
+from django.conf import settings
 from models import *
 from xadmin.layout import *
 
@@ -18,9 +21,30 @@ class CountryInline(object):
 
 class ContinentAdmin(object):
     search_fields = ('name',)
-    list_display = ('name',)
+    list_display = (
+        u'id',
+        'name',
+        'order',
+        'head_img',
+        'pay_status',
+        'ctime',
+        'utime',
+    )
     inlines = (CountryInline,)
     model_icon = 'globe'
+
+    def head_img(self, obj):
+        res = Continent.objects.filter(id=obj.id)
+        if not res:
+            return "-"
+        return '<img src="%s%s" alt="head img" height=40/>' % (settings.CDN_URL, res[0].file)
+
+    head_img.short_description = u"image file"
+    head_img.allow_tags = True
+
+
+    actions = ("create_user_ref",)
+    list_per_page = 20
 
 xadmin.site.register(Continent, ContinentAdmin)
 

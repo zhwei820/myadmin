@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# coding=utf-8
+
 # Django settings for wictrl project.
 
 import sys
@@ -21,6 +24,8 @@ DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL'))
 }
+CDN_URL = config('CDN_URL', default=False)
+
 gettext_noop = lambda s: s
 
 PROJECT_ROOT = os.path.join(os.path.realpath(

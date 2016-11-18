@@ -4,17 +4,33 @@ from django.db import models
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
+PRESENT_STATE_CHOICES = (
+    (-1, "作弊"),
+    (1, "待审核"),
+    (2, "审核通过"),
+    (3, "提现成功"),
+    (4, "提现失败"),
+    (5, "打款中"),
+    (6, "已退款"),
+    (7, "人工退款"),
+    (8, "账目不平"),
+)
+class TimeIntervals(models.Model):
+    start_time = models.CharField(max_length=20)
+    end_time = models.CharField(max_length=20)
+    con_id = models.IntegerField()
 
 class Continent(models.Model):
     name = models.CharField(max_length=256)
     order = models.IntegerField()
-    file = models.CharField(max_length=100)
-    pay_status = models.SmallIntegerField(u"系统平台", default=2,
-                                        choices=OS_PLATFORM_CHOICES,
-                                        db_index=True)
+    file = models.ImageField(u'Image')
+    pay_status = models.SmallIntegerField(
+            u"状态", default=2, db_index=True,
+            choices=PRESENT_STATE_CHOICES,
+            help_text=u"管理员不能直接置退款, 添加人工退款, 系统会自动核实帐目退款")
     ctime = models.DateTimeField(u"创建时间", auto_now_add=True, db_index=True)
     utime = models.DateTimeField(u"更新时间", auto_now=True)
-
+    toppings = models.ManyToManyField(TimeIntervals)
     def __unicode__(self):
         return self.name
 

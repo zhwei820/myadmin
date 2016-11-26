@@ -15,10 +15,36 @@ PRESENT_STATE_CHOICES = (
     (7, "人工退款"),
     (8, "账目不平"),
 )
+
+
+class Ads(models.Model):
+    name = models.CharField(max_length=256)
+    code = models.CharField(max_length=2,
+                            help_text='ISO 3166-1 alpha-2 - two character '
+                                      'country code')
+    independence_day = models.DateField(blank=True, null=True)
+    area = models.BigIntegerField(blank=True, null=True)
+    population = models.BigIntegerField(blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+    description = models.TextField(blank=True,
+                                   help_text='Try and enter few some more '
+                                             'lines')
+    architecture = models.TextField(blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = "Ads"
+
 class TimeIntervals(models.Model):
-    start_time = models.CharField(max_length=20)
-    end_time = models.CharField(max_length=20)
-    con_id = models.IntegerField()
+    start_time = models.DateTimeField(u"开始时间")
+    end_time = models.DateTimeField(u"结束时间")
+    ad = models.ForeignKey(Ads)
+    cpm_num1 = models.IntegerField(default=0)
+    cpc_num1 = models.IntegerField(default=0)
+
 
 class Continent(models.Model):
     name = models.CharField(max_length=256)
@@ -30,7 +56,6 @@ class Continent(models.Model):
             help_text=u"管理员不能直接置退款, 添加人工退款, 系统会自动核实帐目退款")
     ctime = models.DateTimeField(u"创建时间", auto_now_add=True, db_index=True)
     utime = models.DateTimeField(u"更新时间", auto_now=True)
-    toppings = models.ManyToManyField(TimeIntervals)
     def __unicode__(self):
         return self.name
 

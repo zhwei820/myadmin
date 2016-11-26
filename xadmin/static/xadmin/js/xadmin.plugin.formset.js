@@ -2,7 +2,8 @@
     $.fn.formset = function(opts){
         var $$ = $(this);
 
-        var options = $.extend({
+        // var 
+        options = $.extend({
             prefix: $$.data('prefix')
         }, $.fn.formset.styles[$$.data('style')], opts),
 
@@ -94,6 +95,27 @@
                 if (options.added) options.added(row, $$);
                 return false;
             });
+
+////////////////////////////////////////
+
+            $("#generate_cron").click(function(){
+                
+                var a = [0,1]
+                for(var ii in a){
+                    var formCount = ii,
+                        row = options.formTemplate.clone(true).removeClass('empty-form');
+                    updateRowIndex(row, formCount);
+
+                    row.appendTo($$);
+                    insertDeleteLink(row);
+                    row.exform();
+                    $('#id_' + options.prefix + '-TOTAL_FORMS').val(formCount + 1);
+                    // If a post-add callback was supplied, call it with the added form:
+                    if (options.added) options.added(row, $$);
+                }
+            })
+
+
         }
 
         return $$;
@@ -142,4 +164,15 @@
             $(this).formset();
         });
     });
+
+
+// custom   //////////////////////////
+
+    var a = $("#id_population")
+    if(a){
+        a.addClass("inline-block")
+        a.parent().append('<input type="button" id="generate_cron" class="btn btn-default" stype="display:inline-block" value="生成"/>')
+    }
+////////////////////////////////
+
 })(jQuery);

@@ -9,8 +9,23 @@ from xadmin.layout import *
 from xadmin.plugins.inline import Inline
 
 from .models import Country, Continent, KitchenSink, Category, City, \
-    Microwave, Fridge, WysiwygEditor, ReversionedItem
+    Microwave, Fridge, WysiwygEditor, ReversionedItem, TimeIntervals
 
+
+class TimeIntervalsInline(object):
+    model = TimeIntervals
+    extra = 0
+    verbose_name_plural = 'TimeIntervals'
+
+
+class AdsAdmin(object):
+    search_fields = ('name', 'code')
+    list_display = ('name', 'code', 'independence_day')
+
+    inlines = (TimeIntervalsInline,)
+    model_icon = 'flag'
+
+xadmin.site.register(Ads, AdsAdmin)
 
 class CountryInline(object):
     model = Country
@@ -90,6 +105,7 @@ class CountryAdmin(object):
     )
 
 xadmin.site.register(Country, CountryAdmin)
+
 
 
 # Inlines for KitchenSink

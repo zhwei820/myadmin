@@ -60,6 +60,11 @@ select.selectmultiple {
   padding: 5px 0;
   display: inline-block;
 }
+.inline-block {
+  padding: 5px 0;
+  display: inline-block!important;
+}
+
 
 .help-block {
   margin-bottom: 0px;

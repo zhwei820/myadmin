@@ -96,7 +96,7 @@
                 return false;
             });
 
-////////////////////////////////////////
+///// custom ///////////////////////////////////
 
             $("#generate_cron").click(function(){
                 var r = $(".formset-row")
@@ -124,31 +124,6 @@
 
         return $$;
     }
-
-/////////////////////////////////////////////
-        function render_cron(start_date, end_date, start_hour, end_hour, cpm_num_all, cpc_num_all){  // 
-            var kk = 0;
-            var now = new Date();
-            var days = parseInt((end_date - start_date) / (3600 * 24 * 1000)) + 1;
-            var prenum = parseInt($("#id_timeintervals_set-TOTAL_FORMS").val())
-
-            for(var ii = start_date; ii < end_date; ii += 3600 * 24 * 1000){
-                $("#timeintervals_set-add-row").click()
-            }
-            
-            for(var ii = start_date; ii <= end_date; ii += 3600 * 24 * 1000){
-                var kkk = kk + prenum
-                
-                $("#id_timeintervals_set-" + kkk + "-start_time_0").val((new Date(ii)).Format("yyyy-MM-dd"))
-                $("#id_timeintervals_set-" + kkk + "-start_time_1").val(start_hour)
-                $("#id_timeintervals_set-" + kkk + "-end_time_0").val((new Date(ii)).Format("yyyy-MM-dd"))
-                $("#id_timeintervals_set-" + kkk + "-end_time_1").val(end_hour)
-                $("#id_timeintervals_set-" + kkk + "-cpm_num1").val(parseInt(cpm_num_all / days))
-                $("#id_timeintervals_set-" + kkk + "-cpc_num1").val(parseInt(cpc_num_all / days))
-                kk ++
-            }
-        }
-/////////////////////////////////////////////
 
     $.fn.formset.styles = {
         'tab': {
@@ -208,6 +183,30 @@
             a.append(s)
         }
     }
-////////////////////////////////
+
+    function render_cron(start_date, end_date, start_hour, end_hour, cpm_num_all, cpc_num_all){  // 
+        var kk = 0;
+        var now = new Date();
+        var days = parseInt((end_date - start_date) / (3600 * 24 * 1000)) + 1;
+        var prenum = parseInt($("#id_timeintervals_set-TOTAL_FORMS").val())
+
+        for(var ii = start_date; ii < end_date; ii += 3600 * 24 * 1000){
+            $("#timeintervals_set-add-row").click()
+        }
+        
+        for(var ii = start_date; ii <= end_date; ii += 3600 * 24 * 1000){
+            var kkk = kk + prenum
+            
+            $("#id_timeintervals_set-" + kkk + "-start_time_0").val((new Date(ii)).Format("yyyy-MM-dd"))
+            $("#id_timeintervals_set-" + kkk + "-start_time_1").val(start_hour)
+            $("#id_timeintervals_set-" + kkk + "-end_time_0").val((new Date(ii)).Format("yyyy-MM-dd"))
+            $("#id_timeintervals_set-" + kkk + "-end_time_1").val(end_hour)
+            $("#id_timeintervals_set-" + kkk + "-cpm_num1").val(parseInt(cpm_num_all / days))
+            $("#id_timeintervals_set-" + kkk + "-cpc_num1").val(parseInt(cpc_num_all / days))
+            kk ++
+        }
+    }
+/////////////////////////////////////////////
+
 
 })(jQuery);

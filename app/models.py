@@ -37,6 +37,7 @@ class Ads(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name_plural = "Ads"
+        verbose_name = "广告"
 
 
 class TimeIntervals(models.Model):
@@ -45,6 +46,13 @@ class TimeIntervals(models.Model):
     ad = models.ForeignKey(Ads)
     cpm_num1 = models.IntegerField(default=0)
     cpc_num1 = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return str(self.start_time)[0:10]
+
+    class Meta:
+        verbose_name_plural = "广告投放计划任务"
+        verbose_name = "计划任务"
 
 
 class Continent(models.Model):

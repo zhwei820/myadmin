@@ -16,6 +16,13 @@ PRESENT_STATE_CHOICES = (
     (8, "账目不平"),
 )
 
+AD_STATUS_CHOICES = (
+    (0, "未上线"),
+    (1, "上线"),
+    (2, "暂缓上线"),
+    (3, "下线"),
+)
+
 
 class Ads(models.Model):
     name = models.CharField(max_length=256)
@@ -29,7 +36,10 @@ class Ads(models.Model):
     cpc_num_all = models.IntegerField(default=0)
     start_time = models.DateTimeField(u"开始时间")
     end_time = models.DateTimeField(u"结束时间")
-
+    status = models.SmallIntegerField(
+        u"状态", default=0, db_index=True,
+        choices=AD_STATUS_CHOICES,
+        help_text=u"广告状态")
 
     def __unicode__(self):
         return self.name

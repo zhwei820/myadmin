@@ -52,16 +52,16 @@ TIME_ZONE = 'GMT'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'zh-cn'
 
 LANGUAGES = (
-    ('de', gettext_noop('German')),
-    ('en', gettext_noop('English')),
-    ('ja', gettext_noop('Japanese')),
-    ('lt', gettext_noop('Lithuanian')),
-    ('nl', gettext_noop('Dutch')),
-    ('pl', gettext_noop('Polish')),
-    ('pt', gettext_noop('Portuguese')),
+    # ('de', gettext_noop('German')),
+    # ('en', gettext_noop('English')),
+    # ('ja', gettext_noop('Japanese')),
+    # ('lt', gettext_noop('Lithuanian')),
+    # ('nl', gettext_noop('Dutch')),
+    # ('pl', gettext_noop('Polish')),
+    # ('pt', gettext_noop('Portuguese')),
     ('zh-hans', gettext_noop('Simplified Chinese')),
 )
 

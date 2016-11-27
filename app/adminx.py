@@ -20,7 +20,7 @@ class TimeIntervalsInline(object):
 
 class AdsAdmin(object):
     search_fields = ('name', 'code')
-    list_display = ('name', 'code', 'independence_day')
+    list_display = ('id', 'name', 'code')
 
     inlines = (TimeIntervalsInline,)
     model_icon = 'flag'

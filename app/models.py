@@ -22,14 +22,14 @@ class Ads(models.Model):
     code = models.CharField(max_length=2,
                             help_text='ISO 3166-1 alpha-2 - two character '
                                       'country code')
-    independence_day = models.DateField(blank=True, null=True)
-    area = models.BigIntegerField(blank=True, null=True)
-    population = models.BigIntegerField(blank=True, null=True)
-    order = models.PositiveIntegerField(default=0)
     description = models.TextField(blank=True,
                                    help_text='Try and enter few some more '
                                              'lines')
-    architecture = models.TextField(blank=True)
+    cpm_num_all = models.IntegerField(default=0)
+    cpc_num_all = models.IntegerField(default=0)
+    start_time = models.DateTimeField(u"开始时间")
+    end_time = models.DateTimeField(u"结束时间")
+
 
     def __unicode__(self):
         return self.name
@@ -37,6 +37,7 @@ class Ads(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name_plural = "Ads"
+
 
 class TimeIntervals(models.Model):
     start_time = models.DateTimeField(u"开始时间")
@@ -51,11 +52,12 @@ class Continent(models.Model):
     order = models.IntegerField()
     file = models.ImageField(u'Image')
     pay_status = models.SmallIntegerField(
-            u"状态", default=2, db_index=True,
-            choices=PRESENT_STATE_CHOICES,
-            help_text=u"管理员不能直接置退款, 添加人工退款, 系统会自动核实帐目退款")
+        u"状态", default=2, db_index=True,
+        choices=PRESENT_STATE_CHOICES,
+        help_text=u"管理员不能直接置退款, 添加人工退款, 系统会自动核实帐目退款")
     ctime = models.DateTimeField(u"创建时间", auto_now_add=True, db_index=True)
     utime = models.DateTimeField(u"更新时间", auto_now=True)
+
     def __unicode__(self):
         return self.name
 
@@ -106,7 +108,8 @@ class KitchenSink(models.Model):
                                  help_text='Try and enter few some more lines')
 
     file = models.FileField(upload_to='.', blank=True)
-    readonly_field = models.CharField(max_length=127, default='Some value here')
+    readonly_field = models.CharField(
+        max_length=127, default='Some value here')
 
     date = models.DateField(blank=True, null=True)
     date_and_time = models.DateTimeField(blank=True, null=True)
@@ -150,6 +153,8 @@ class KitchenSink(models.Model):
         return self.name
 
 # Inline model for KitchenSink
+
+
 class Fridge(models.Model):
     kitchensink = models.ForeignKey(KitchenSink)
     name = models.CharField(max_length=64)

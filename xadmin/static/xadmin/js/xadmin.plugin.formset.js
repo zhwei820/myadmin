@@ -99,27 +99,52 @@
 ////////////////////////////////////////
 
             $("#generate_cron").click(function(){
-                
-                var a = [0,1]
-                for(var ii in a){
-                    var formCount = ii,
-                        row = options.formTemplate.clone(true).removeClass('empty-form');
-                    updateRowIndex(row, formCount);
-
-                    row.appendTo($$);
-                    insertDeleteLink(row);
-                    row.exform();
-                    $('#id_' + options.prefix + '-TOTAL_FORMS').val(formCount + 1);
-                    // If a post-add callback was supplied, call it with the added form:
-                    if (options.added) options.added(row, $$);
+                var r = $(".formset-row")
+                for(var ii = 0; ii < r.length; ii++){
+                    if(!$(r[ii]).hasClass("row-delete")){
+                        var cc = $(r[ii]).addClass("row-deleted")
+                    }
                 }
-            })
 
+                var id_start_time_0 = Date.parse($("#id_start_time_0").val())
+                var id_start_time_1 = $("#id_start_time_1").val()
+
+                var id_end_time_0 = Date.parse($("#id_end_time_0").val())
+                var id_end_time_1 = $("#id_end_time_1").val()
+
+                var id_cpm_num_all = $("#id_cpm_num_all").val()
+                var id_cpc_num_all = $("#id_cpc_num_all").val()
+
+                render_cron(id_start_time_0, id_end_time_0, id_start_time_1, id_end_time_1, id_cpm_num_all, id_cpc_num_all)
+                return false;                
+            })
+/////////////////////////////////////////////
 
         }
 
         return $$;
     }
+
+/////////////////////////////////////////////
+        function render_cron(start_date, end_date, start_hour, end_hour, cpm_num_all, cpc_num_all){  // 
+            var kk = 0;
+            var now = new Date();
+            var days = parseInt((end_date - start_date) / (3600 * 24 * 1000)) + 1;
+
+            for(var ii = start_date; ii < end_date; ii += 3600 * 24 * 1000){
+                $("#timeintervals_set-add-row").click()
+            }
+            for(var ii = start_date; ii <= end_date; ii += 3600 * 24 * 1000){
+                $("#id_timeintervals_set-" + kk + "-start_time_0").val((new Date(ii)).Format("yyyy-MM-dd"))
+                $("#id_timeintervals_set-" + kk + "-start_time_1").val(start_hour)
+                $("#id_timeintervals_set-" + kk + "-end_time_0").val((new Date(ii)).Format("yyyy-MM-dd"))
+                $("#id_timeintervals_set-" + kk + "-end_time_1").val(end_hour)
+                $("#id_timeintervals_set-" + kk + "-cpm_num1").val(parseInt(cpm_num_all / days))
+                $("#id_timeintervals_set-" + kk + "-cpc_num1").val(parseInt(cpc_num_all / days))
+                kk ++
+            }
+        }
+/////////////////////////////////////////////
 
     $.fn.formset.styles = {
         'tab': {
@@ -168,10 +193,16 @@
 
 // custom   //////////////////////////
 
-    var a = $("#id_population")
+    var a = $("#div_id_end_time")
     if(a){
-        a.addClass("inline-block")
-        a.parent().append('<input type="button" id="generate_cron" class="btn btn-default" stype="display:inline-block" value="生成"/>')
+        var name = $("#id_name").val()
+        if(!name){
+            var s = '<div class="form-group"><label class="control-label">aaaa</label><div class="controls">\
+            <input type="button" class="btn btn-primary" id="generate_cron" value="生成">\
+            </div></div>'
+            a.addClass("inline-block")
+            a.append(s)
+        }
     }
 ////////////////////////////////
 

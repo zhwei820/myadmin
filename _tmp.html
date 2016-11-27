@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="IE=7" http-equiv="X-UA-Compatible">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>管理中心</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/css/font-awesome.min.css">
+
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script src="/js/jquery.min.js"></script>
+
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/bootstrap/js/bootstrap-validator.js"></script>
+
+    <script src="/bootstrap-datetimepicker/js/moment.js"></script>
+
+    <link rel="stylesheet" href="/bootstrap-table/bootstrap-table.min.css">
+    <script src="/bootstrap-table/bootstrap-table.min.js"></script>
+
+    <link rel="stylesheet" href="/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+
+    <script src="/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/bootstrap-table/tableExport.js"></script>
+    <script src="/bootstrap-table/bootstrap-table-export.js"></script>
+    <script src="/jquery_plugin/jquery.ajaxfileupload.js" charset="utf-8"></script>
+</head>
+
+<body>
+
+    <style>
+        .update {
+            color: #333;
+            margin-right: 5px;
+        }
+        
+        .remove {
+            color: red;
+            margin-left: 5px;
+        }
+        
+        .alert {
+            padding: 0 14px;
+            margin-bottom: 0;
+            display: inline-block;
+        }
+        
+        .lab {
+            /*color: blue;*/
+            margin: 2px;
+        }
+        
+        .alert_info {
+            width: 50%;
+            height: 90%;
+            font-size: 16px;
+            margin: 10px auto;
+            position: fixed;
+            left: 38%;
+            top: 43%;
+        }
+        
+        .alert_info2 {
+            width: 50%;
+            height: 44%;
+            font-size: 16px;
+            margin: 10px auto;
+            position: fixed;
+            left: 31%;
+            top: 20%;
+        }
+        
+        .hide {
+            display: none;
+        }
+        .btn_gen {
+            margin-left: 10px;
+            width: 80px;
+            display: inline;
+            margin: 3px;            
+        }
+        .input_gen {
+            margin-left: 10px;
+            width: 100px;
+            display: inline;
+            margin: 3px;
+        }
+        .close_item{
+            display: inline;
+            text-decoration : none;
+        }
+     
+        .right_margin{
+            right_margin-right: 50px;
+        }
+        .cron_day{
+            background-color: blanchedalmond!important;
+            border: 1px solid lightskyblue;
+            cursor: auto!important;
+        }
+        .modal-dialog{
+            width: 1000px;
+        }
+        .edit_num{
+           cursor:pointer; 
+           height: 100px;
+
+        }
+    </style>
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="/admin/ad_cpc/index">广告列表</a></li>
+    </ul>
+
+    <p class="bg-success alert">...</p>
+
+    <div class="form-inline">
+        <button type="button" class="btn btn-primary create">
+        添加
+      </button> 时间
+        <div class="form-group">
+            <div class='input-group date ' id='start_time'>
+                <input type='text' class="form-control date_input" name="start_time" id="start_time_" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class='input-group date ' id='end_time'>
+                <input type='text' class="form-control date_input" name="end_time" id="end_time_" />
+                <span class="input-group-addon">
+          <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+          $(function() {
+              $('#start_time').datetimepicker({
+                  format: "YYYY-MM-DD",
+                  defaultDate: (new Date()).setDate(new Date().getDate() - 10),
+              });
+              $('#end_time').datetimepicker({
+                  format: "YYYY-MM-DD",
+                  defaultDate: (new Date()).setMinutes(new Date().getMinutes() + 5),
+
+              });
+          });
+      </script>
+
+    <table id="table" data-show-export="true" data-search="true" data-show-refresh="true" data-toolbar=".form-inline" data-sort-name="id"
+        data-sort-order="desc" data-row-style="rowStyle" data-pagination="true" data-page-size="10" data-page-list="[10,20]"
+        data-pagination-first-text="First" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-pagination-last-text="Last"
+        data-query-params="queryParams">
+        <thead>
+            <tr>
+                <th data-field="action" data-align="center" data-formatter="actionFormatter" data-events="actionEvents">操作</th>
+                <th data-sortable="true" data-field="id">ID</th>
+                <th data-sortable="true" data-field="name" width="100">应用名称</th>
+                <th data-sortable="true" data-field="title" width="100">副标题</th>
+                <th data-sortable="true" data-field="_icon" width="100">图标</th>
+                <th data-sortable="true" data-field="_image_url" width="100">锁屏大图</th>
+                <th data-sortable="true" data-field="_banner_image_url" width="100">banner大图</th>
+                <th data-sortable="true" data-field="cpc_price" width="100">赠送积分</th>
+                <th data-sortable="true" data-field="click_url">跳转URL</th>
+
+                <th data-sortable="true" data-field="cpm_callback_url">cpm回调链接</th>
+                <th data-sortable="true" data-field="cpc_callback_url">cpc回调链接</th>
+                <th data-sortable="true" data-field="_cpm_num">今日cpm投放量</th>
+                <th data-sortable="true" data-field="_cpc_num">今日cpc投放量</th>
+                <th data-sortable="true" data-field="cpm_num_left">今日cpm余量</th>
+                <th data-sortable="true" data-field="cpc_num_left">今日cpm余量</th>
+                <th data-sortable="true" data-field="cpm_num_all">cpm总投放量</th>
+                <th data-sortable="true" data-field="cpc_num_all">cpc总投放量</th>
+
+                <th data-sortable="true" data-field="_limit_type">单用户限制方式</th>
+                <th data-sortable="true" data-field="limit_num_cpm">单用户cpm限制次数</th>
+                <th data-sortable="true" data-field="limit_num_cpc">单用户cpc限制次数</th>
+
+                <th data-sortable="true" data-field="start_time">生效时间</th>
+                <th data-sortable="true" data-field="end_time">失效时间</th>
+                <!--<th data-sortable="true" data-field="mission_sec">任务时长(单位:秒)</th>
+                <th data-sortable="true" data-field="mission_des">任务描述</th>
+                <th data-sortable="true" data-field="click_times">二次跳转次数</th>
+                <th data-sortable="true" data-field="mission_url">指定跳转链接</th>-->
+                <th data-sortable="true" data-field="area">投放区域</th>
+                <th data-sortable="true" data-field="weight">排序值</th>
+                <th data-sortable="true" data-field="_status">状态</th>
+
+            </tr>
+        </thead>
+    </table>
+
+    <div id="modal_create" class="modal fade" data-toggle="validator" role="form">
+        <div class="modal-dialog">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">编辑</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="">应用名称</label>
+                        <input type="text" class="form-control" name="name" id="name" value='' required="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">副标题</label>
+                        <input type="text" class="form-control" name="title" id="title" value='' required="">
+                    </div>
+
+                    <div class="form-group">
+                        <label>广告入口</label>
+                        <label>
+                            <input name="_ad_pos" class="ad_pos" type="checkbox" value="lockscreen" />锁屏大图 </label>
+                        <label>
+                            <input name="_ad_pos" class="ad_pos" type="checkbox" value="banner" />banner </label>
+                        <label>
+                            <input name="_ad_pos" class="ad_pos" type="checkbox" value="left_pull" />广告列表 </label>
+                    </div>
+
+                    <div class="form-group icon_wrapper hide">
+
+                        <div class="col-md-12 form-control-user">
+                            <label>图标<span style="color:red;">(icon尺寸为：128X128)</span></label>
+
+                            <div class="photo-container photo-container-single">
+                                <div class="img_wrapper1">
+
+                                </div>
+                                <div onclick="image_input1.click()" class="photo-upload"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group lockscreen_wrapper hide">
+                        <div class="col-md-12 form-control-user">
+                            <label>锁屏大图<span style="color:red;">
+                                <!--(icon尺寸为：128X128)-->
+                                </span></label>
+
+                            <div class="photo-container photo-container-single">
+                                <div class="img_wrapper2">
+
+                                </div>
+                                <div onclick="image_input2.click()" class="photo-upload"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group banner_wrapper hide">
+                        <div class="col-md-12 form-control-user">
+                            <label>banner<span style="color:red;">
+                                <!--(icon尺寸为：128X128)-->
+                                </span></label>
+
+                            <div class="photo-container photo-container-single">
+                                <div class="img_wrapper3">
+
+                                </div>
+                                <div onclick="image_input3.click()" class="photo-upload"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">cpc奖励金额（单位：分）</label>
+                        <input type="text" class="form-control" name="cpc_price" id="cpc_price" value='' required="" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                            onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                    </div>
+
+                    <div class="form-group" id="is_show_url">
+                        <label for="">广告链接</label>
+                        <input type="text" class="form-control" name="click_url" id="click_url" value='' required="">
+                    </div>
+
+                    <!--cpm_callback_url
+cpc_callback_url
+cpm_num_all
+cpc_num_all-->
+
+                    <!--<div class="form-group">
+                        <label for="">任务描述</label>
+                        <textarea class="form-control" name="mission_des" id="mission_des" style="height:175px;"></textarea>
+                    </div>-->
+
+                    <div class="form-group">
+                        <label for="">cpm回调链接（*重要*）--如有多个请使用英文逗号 ";" 分割 </label>
+                        <input class="form-control" name="cpm_callback_url" id="cpm_callback_url"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="">cpc回调链接（*重要*）--如有多个请使用英文逗号 ";" 分割</label>
+                        <input class="form-control" name="cpc_callback_url" id="cpc_callback_url"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="">cpm广告总量（*重要*）</label>
+                        <input type="number" class="form-control" name="cpm_num_all" id="cpm_num_all"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="">cpc广告总量（*重要*）</label>
+                        <input type="number" class="form-control" name="cpc_num_all" id="cpc_num_all"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">生效时间</label>
+                        <div class='input-group date start_time' id='start_time1'>
+                            <label for="" style="display:none;">生效时间</label>
+                            <input type='text' class="form-control " name="start_time" id="start_time2"/>
+                            <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">失效时间</label>
+                        <div class='input-group date end_time ' id='end_time1'>
+                            <label for="" style="display:none;">失效时间</label>
+                            <input type='text' class="form-control " name="end_time" id="end_time2"/>
+                            <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">生成计划任务</label>
+                        <button class="btn btn-primary btn_gen" id="cpc_crontab" value="" >生成 </button>
+                        <div class="gen_out_wrapper"></div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="">权重(1-4999,值越大排序越靠前)</label>
+                        <input type="number" class="form-control" name="weight" id="weight" value='' required="" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">客户端展示次数</label>
+                        <input type="number" class="form-control" name="max_show_time" id="max_show_time" value='' required="" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">单用户限制方式</label>
+                        <select class="form-control" name="limit_type" id="limit_type_">
+                            <option value='0' selected="selected">无限制</option>
+                            <option value='1' >用户设备限制</option>
+                            <option value='2' >用户ip限制</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group " id="uid_limit_num">
+                        <label for="">单用户cpm限制次数</label>
+                        <input class="form-control" type="number" name="limit_num_cpm" id=""/>
+                    </div>
+
+                    <div class="form-group " id="uid_limit_num">
+                        <label for="">单用户cpc限制次数</label>
+                        <input class="form-control" type="number" name="limit_num_cpc" id=""/>
+                    </div>
+                    <div class="form-group" id="area">
+                        <label for="">投放区域</label>
+                        <label for="" style="color:red;font-size:13px;">备注：如果不选择投放区域，默认是全国。如果选定区域投放，则需要 点击添加。 </label>
+                        <div id="area_list">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="">省</label>
+                            <select class="province form-control input_gen" name="province_1" id="province_1">
+                                <option value='全国' >全国</option>
+                                <{foreach from=$proList key=k item=v}>
+                                <option value='<{$v}>' ><{$v}></option>
+                                <{/foreach}>
+                            </select>
+                            <label for="">市</label>
+                            <select class="city form-control input_gen" name="city_1" id="city_1">
+                               
+                            </select>
+                            <button class="btn" id="save_area_info">点击添加</button>
+                        </div>
+                    </div>
+
+                    <!--
+                    <div class="form-group">
+                        <label for="">访问页面时长（单位：秒）</label>
+                        <label for="" style="color:red;font-size:13px;">备注：默认是 3 秒。</label>
+                        <input type="text" class="form-control" name="mission_sec" id="mission_sec" value='3' required="" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                            onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="">二次跳转次数</label>
+                        <label for="" style="color:red;font-size:13px;">注：如果访问了广告页面A，则记为0次；从A跳转到B，则为 1次；A->B->A，为1次；A->B->C，为2次。</label>
+                        <input type="text" class="form-control" name="click_times" id="click_times" value='0' required="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">页面内指定跳转链接</label>
+                        <label for="" style="color:red;font-size:13px;">备注：如果指定跳转链接A，则用户需访问A，才能领取红包。默认为 无。（可不填写）</label>
+                        <input type="text" class="form-control" name="mission_url" id="mission_url" value='' required="">
+                    </div>
+                    <div class="form-group hide" id="ip_limit">
+                        <label for="">ip访问限制（请输入数字）</label>
+                        <label for="" style="color:red;font-size:13px;">注：默认数字为0，意味着不限制ip；如果为3，则意味着，一个ip里，最多只能有3个用户领取红包。</label>
+                        <input type="text" class="form-control" name="ip" id="ip" value="0" required="" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                            onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                    </div>-->
+
+
+                    <input type="hidden" id="areaList" value='<{$areaList}>'>
+                    
+                    <input type="file" class="hidden" name="file" id="image_input1" required accept="image/*">
+                    <input type="file" class="hidden" name="file" id="image_input2" required accept="image/*">
+                    <input type="file" class="hidden" name="file" id="image_input3" required accept="image/*">
+
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="botton" class="btn btn-primary create_item">Submit</button>
+                </div>
+            </form>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+    <!-- 修改cpm弹窗 -->
+    <div id="modal_edit_cpm" class="modal fade" data-toggle="validator" role="form" style="position: fixed;top:30%;">
+        <div class="modal-dialog">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <!-- <h4 class="modal-title"></h4> -->
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="">修改cpm数量</label>
+                        <input type="text" class="form-control" name="edit_cpm" id="edit_cpm" value='' required="" >
+                    </div>
+                    <input type="hidden" id="ad_id" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="botton" class="btn btn-primary createSplash" id="submit_cpm">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 修改量级end -->
+
+
+    <!-- 修改cpm弹窗 -->
+    <div id="modal_edit_cpc" class="modal fade" data-toggle="validator" role="form" style="position: fixed;top:30%;">
+        <div class="modal-dialog">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <!-- <h4 class="modal-title"></h4> -->
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="">修改cpc数量</label>
+                        <input type="text" class="form-control" name="edit_cpc" id="edit_cpc" value='' required="" >
+                    </div>
+                    <input type="hidden" id="ad_id1" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="botton" class="btn btn-primary createSplash" id="submit_cpc">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 修改量级end -->
+
+    <script>
+        $('#save_area_info').click(function(e){
+            e.preventDefault();
+            var pro = $('#province_1').children('option:selected').val();
+            var city = $('#city_1').children('option:selected').val();
+            var str = '';
+            
+            if (city != '全选') {
+                if (pro == '全国') {
+                    str += '<label class="lab label label-primary">'+ pro +';</label>';
+                }else {
+                    str += '<label class="lab label label-primary">'+ pro +','+ city + ';</label>';
+                }
+            } else {
+                str += '<label class="lab label label-primary">'+ pro +';</label>';
+            }
+            $('#area_list').append(str);  
+            initDelArea();
+        });
+        function initDelArea(){
+            $('#area_list').find('label').each(function(){
+                $(this).click(function(){
+                    $(this).remove();
+                })
+            });
+        }
+        
+        var areaList = $('#areaList').val();
+        $('.province').each(function(){
+            $(this).change(function(){
+                var province = $(this);
+                var city = $(this).parent().find('.city');
+                var pro = $(this).children('option:selected').val();
+                if (city.children('option:selected').val()) {
+                    city.children().remove();
+                }
+                getCityList(province,city,pro);
+            })
+        });
+
+        function getCityList(province,city,pro) {
+            var data = eval('('+ areaList +')');
+            var str = '';
+            for(var i = 0; i <= data[pro].length - 1; i++){
+                str += '<option value="'+ data[pro][i] +'">'+ data[pro][i] +'</option>';
+            }
+            city.append(str);
+        }
+        $('#start_time1').datetimepicker({
+            format: "YYYY-MM-DD HH:mm:ss",
+            defaultDate: parseInt((new Date()).setHours(new Date().getHours() + 1) / (3600 * 1000)) * 3600 * 1000,
+        });
+        $('#end_time1').datetimepicker({
+            format: "YYYY-MM-DD HH:mm:ss",
+            defaultDate: parseInt((new Date()).setDate(new Date().getDate() + 5) / (3600 * 1000)) * 3600 * 1000,
+        });
+    </script>
+    <script>
+        var API_URL = 'http://' + location.host + '/admin/ad_cpc/indexData';
+        function actionFormatter(value) {
+            return[
+              '<button class="update btn btn-default" href="javascript:" title="编辑">编辑</button>',
+              '<button class="operate1 btn btn-default" href="javascript:" title="">上架</button>',
+              '<button class="operate2 btn btn-default" href="javascript:" title="">下架</button>',
+              // '<button class="operate3 btn btn-default" href="javascript:" title="">分日详情</button>',
+                ].join('');
+            }
+
+            // update and delete events
+            window.actionEvents = {
+                'click .update': function(e, value, row) {
+                    showModalCreate($(this).attr('title'), row);
+                  },
+                  'click .operate1': function(e, value, row) {
+                    if($(this).hasClass("disabled")){
+                        return;
+                    }
+                    $.ajax({
+                        type:'get',
+                        url:'http://' + location.host + '/admin/ad_cpc/open',
+                        data:{id:row.id},
+                        dataType:'json',
+                        success:function(msg){
+                            if(msg.code == 1){
+                                showAlert(msg.message, 'error');
+                            }else{
+                                showAlert(msg.message, 'success');
+                            }
+
+                            refreshTable();
+                        }
+                    });
+                    //ajax_get(API_URL.substring(0, API_URL.length - 1 - "indexData".length) + '/open/?id=' + row.id)
+                  },
+                  'click .operate2': function(e, value, row) {
+                    if($(this).hasClass("disabled")){
+                        return;
+                    }
+                    console.log(row.id);
+                    $.ajax({
+                        type:'get',
+                        url:'http://' + location.host + '/admin/ad_cpc/shut',
+                        data:{id:row.id},
+                        dataType:'json',
+                        success:function(msg){
+                            if(msg.code == 1){
+                                showAlert(msg.message, 'error');
+                            }else{
+                                showAlert(msg.message, 'success');
+                                refreshTable();
+                            }
+                        },
+                        error:function(){
+                            console.log('error');
+                        }
+                        
+                    });
+                    //ajax_get(API_URL.substring(0, API_URL.length - 1 - "indexData".length) + '/shut/?id=' + row.id)
+                },
+                'click .operate3':function(e, value, row){
+                    if($(this).hasClass("disabled")){
+                        return;
+                    }
+                    var s_time = $("#start_time_").val();
+                    var e_time = $("end_time_").val();
+                    window.open("/admin/ad_cpc/daliy_data_index/?id=" + row.id +'&start_time='+ $('#start_time_').val() + '&end_time=' + $('#end_time_').val(),'_blank');
+                }
+            };
+
+            function showAlert(title, type) {
+                $alert.attr('class', 'alert alert-' + type || 'success')
+                    .html('<i class="glyphicon glyphicon-check"></i> ' + title).show();
+                setTimeout(function() {
+                    $alert.hide();
+                }, 3000);
+            }
+
+            function rowStyle(row, index) {
+                var classes = ['active', 'success', 'info', 'warning', 'danger', 'table_normal'];
+
+                if (row['ctime'] > '2016') {
+                    return {
+                        classes: classes[2]
+                    };
+                }
+                return {
+                    classes: classes[2]
+                };
+            }
+    </script>
+    <script src="/js/table_common.js"></script>
+
+    <script>
+
+    addEvent(document.querySelector(".create"), 'click', function(e) {
+        showModalCreate('新建')
+    });
+
+    function showModalCreate(title, row){
+        $modal_create = $("#modal_create");
+        $modal_create.find('.modal-title').html(title);
+        row = row || {
+            sup_id: 0
+        }; // default row value
+
+        row.id = row.id || 0;
+        $modal_create.data('id', row.id);
+        
+        if (row.id > 0) {            
+            $('#area_list').children().remove();
+            if (row.area) {
+                var arr = row.area.split(';');
+                var str = '';
+                for (var i = 0;i < arr.length;i++) {
+                    str += '<label class="lab label label-primary">' + arr[i] + ';</label>';
+                }
+                $('#area_list').append(str);
+            }
+            initDelArea();
+            $("#cpc_crontab").addClass("disabled")
+            render_cron_from_data(row.cron_data)
+            var pos = row.ad_pos.split(";")
+            for(var ii in pos){
+                $("input[value='" + pos[ii] + "']").prop("checked", true)
+                toggle_upload(pos[ii], true)
+            }
+            is_generated = true
+        }
+        if (row.id == 0) {
+            $modal_create.find('input[type!="radio"][name!="mission_sec"][name!="ip"][name!="click_times"][name!="start_time"][name!="end_time"][name!="_ad_pos"]').val('');
+            $modal_create.find('select[name!="limit_type"][name!="limit_num"]').val('-1');
+            $(".gen_out_wrapper").html('')
+            $("#cpc_crontab").removeClass("disabled")            
+        }
+
+        for (var name in row) {
+          $modal_create.find('input[type!="radio"][name="' + name + '"]').val(row[name]);
+          $modal_create.find('select[name="' + name + '"] option[title="' + row[name] + '"]')
+              .attr("selected", true);
+          $modal_create.find('select[name="' + name + '"]').val(row[name]);
+
+          $modal_create.find('textarea[name="' + name + '"]').html(row[name]);
+          $modal_create.find('input:radio[name="' + name + '"][title="' + row[name] +
+                      '"]')
+              .attr("checked", true);
+        }
+
+        removeAllImage("img_wrapper1");
+        removeAllImage("img_wrapper2");
+        removeAllImage("img_wrapper3");
+        if(row.id > 0 || row.pro_id > 0){
+            addImage("img_wrapper1", row['icon']);
+            addImage("img_wrapper2", row['image_url']);
+            addImage("img_wrapper3", row['banner_image_url']);
+          }
+
+        $modal_create.modal('show');
+    }
+
+          addEvent(document.querySelector(".create_item"), 'click', function(e) {
+            e.preventDefault();
+            if(!is_generated){
+                show_time_error_alert("还没有生成计划任务， 请点击 \"生成\" 按钮，生成计划任务!")
+                return
+            }
+            var area_list = '';
+            $('#area_list').find('label').each(function(){
+                area_list += $(this).html();
+            });
+            var row = {};
+            row['area'] = area_list;
+            row['mission_des'] = $('#mission_des').val();
+            $modal_create = $("#modal_create");
+            $modal_create.find('input[type!="radio"][name]')
+                .each(function() {
+                    row[$(this).attr('name')] = $(this).val();
+                });
+            $modal_create.find('input:radio:checked')
+                .each(function() {
+                    row[$(this).attr('name')] = $(this).val();
+                });
+            
+            $modal_create.find('select[name] option:selected').each(function() {
+                row[$(this).parent("select").attr('name')] = $(this).val();
+            });
+            $modal_create.find('.photo-container .photo_pos input').each(function() {
+                row[$(this).attr('name') + "_c"] = row[$(this).attr('name') + "_c"] ? row[$(this).attr('name') + "_c"] + ';' + $(this).val() : $(this).val();
+            });
+            row['id'] = $modal_create.data('id') || '';
+            row['ad_pos'] = []
+            $('input[type="checkbox"][name="_ad_pos"]:checked').each(function(){
+            	row['ad_pos'].push($(this).val());
+            });
+
+            sendPostAjax($modal_create, row);
+
+          });
+
+        function sendPostAjax($modal_create,row){
+            $.ajax({
+                url: API_URL,
+                type: $modal_create.data('id') ? 'put' : 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(row),
+                success: function(data) {
+                    if (typeof(data) != "object") {
+                        data = JSON.parse(data)
+                    }
+                    if (data.code == 0) {
+                        showAlert(data.message, 'success');
+                        $modal_create.modal('hide');
+                        refreshTable();
+
+                    } else {
+                        showAlert(data.message, 'danger');
+                    }
+                },
+                error: function() {
+                    $modal_create.modal('hide');
+                    showAlert(($modal.data('id') ? 'Update' : 'Create') + ' item error!',
+                        'danger');
+                }
+            });
+        }
+        function refresh_buttons() {
+            $("tr").each(function() {
+                var that = this;
+                $(this).find('td').each(function() {
+                    if (this.innerHTML.indexOf("失效") >= 0) {
+                        $(that).find(".operate2").addClass('disabled');
+                    }
+                    if (this.innerHTML.indexOf("有效") >= 0) {
+                        $(that).find(".operate1").addClass('disabled');
+                    }
+                })
+            })
+        }
+
+
+        $().ready(function() {
+            refreshTable();
+            setInterval("refresh_buttons()", 300);
+        })
+
+        $('#todoSelect').change(function(){
+          if ($('#todoSelect').val() !== '' ) {
+            var title = $('#todoSelect option:selected').text();
+            var select_value = $('#todoSelect').val();
+            $('.wrapper').empty();
+            $('.wrapper').append('<div class="form-group">\
+              <input type="text" class="form-control" id="" name="contract_item" value="' + select_value + '" title="pro" placeholder="" disabled>\
+              <span class="closeItem"><a href="#" >X</a></span>\
+            </div>');
+          };
+
+          return false; // prevent default?
+        });
+
+        $(document).on('click', '.closeItem', function (e) {
+          e.preventDefault();
+          $(this).parent().remove();
+        });
+
+        $().ready(function() {
+            $("#image_input1").AjaxFileUpload({
+                action: API_URL.substring(0, API_URL.length - 1 - "indexData".length) + "/upload_file",
+                onComplete: function(filename, response) {
+                    if (response.code == 1) {
+                        showAlert(response.message, 'error');
+                    } else if (response.code == 0) {
+                        // showAlert(response.message, 'success');
+                        if($("#img_wrapper1_0").length == 0)
+                        {
+                            addImage("img_wrapper1", response.url)
+                        }
+                        else {
+                            showAlert("图片数量限制为1张", 'error');
+                        }
+                    }
+                }
+            });
+        })
+
+        $().ready(function() {
+            $("#image_input2").AjaxFileUpload({
+                action: API_URL.substring(0, API_URL.length - 1 - "indexData".length) + "/upload_file",
+                onComplete: function(filename, response) {
+                    if (response.code == 1) {
+                        showAlert(response.message, 'error');
+                    } else if (response.code == 0) {
+                        // showAlert(response.message, 'success');
+                        if($("#img_wrapper2_0").length == 0)
+                        {
+                            addImage("img_wrapper2", response.url)
+                        }
+                        else {
+                            showAlert("图片数量限制为1张", 'error');
+                        }
+                    }
+                }
+            });
+        })
+
+
+        $().ready(function() {
+            $("#image_input3").AjaxFileUpload({
+                action: API_URL.substring(0, API_URL.length - 1 - "indexData".length) + "/upload_file",
+                onComplete: function(filename, response) {
+                    if (response.code == 1) {
+                        showAlert(response.message, 'error');
+                    } else if (response.code == 0) {
+                        // showAlert(response.message, 'success');
+                        if($("#img_wrapper3_0").length == 0)
+                        {
+                            addImage("img_wrapper3", response.url)
+                        }
+                        else {
+                            showAlert("图片数量限制为1张", 'error');
+                        }
+                    }
+                }
+            });
+        })
+
+        function addImage(container, img_url) {
+            var num = $("." + container).find(".photo_pos").length;
+            $("." + container).append('<div class="photo_pos" id="' + container + '_' + num + '" >' +
+                '<img width=60 src="' + img_url + '" alt=""> <i onclick="removeImage(\'' + container + '_' + num + '\')">x</i>' +
+                '<input type="text" name="' + container + '" value="' + img_url + '" disabled/>' +
+                '</div>');
+        }
+
+        function removeImage(container_id) {
+            $("#" + container_id).remove();
+        }
+        function removeAllImage(container_id) {
+            $("." + container_id).empty();
+        }
+
+        addEvent(document.querySelector("#cpc_crontab"), 'click', function(e) {
+            e.preventDefault();
+            if($(this).hasClass("disabled")){
+                return;
+            }
+            generate_cron();
+        });
+        is_generated = false
+        function generate_cron(){
+            is_generated = true
+            
+            var start_time = Date.parse($('#start_time2').val());
+            var end_time = Date.parse($('#end_time2').val());
+            var cpm_num_all = $("#cpm_num_all").val();
+            var cpc_num_all = $("#cpc_num_all").val();
+            var now = new Date();
+            if(start_time > now ){
+                render_cron(start_time, end_time, cpm_num_all, cpc_num_all);
+            }
+            else{
+                show_time_error_alert("开始时间小于当前时间，不能生成计划任务")
+            }
+            if(cpm_num_all <= 0 || cpc_num_all <= 0){
+                show_time_error_alert("任务总量设置有误， 请确认")
+            }
+        }
+
+        var s = '<div class="gen_wrapper">\
+                    <span class="label label-primary">投放日期</span>\
+                    <input class="form-control input_gen cron_day" name="cron_date_{7}" disabled value="{4}"/>\
+                    <span class="label label-primary">开始时间</span>\
+                    <input class="form-control input_gen " {5} value="{0}" name="cron_start_time_{7}"/>\
+                    <span class="label label-primary">结束时间</span>\
+                    <input class="form-control input_gen right_margin " {5} value="{1}" name="cron_end_time_{7}"/>\
+                    <span class="label label-primary">每日cpm量</span>\
+                    <input class="form-control btn_gen " {5} value="{2}" name="cron_cpm_num_{7}"/>\
+                    <span class="label label-primary">每日cpc量</span>\
+                    <input class="form-control btn_gen " {5} value="{3}" name="cron_cpc_num_{7}"/>\
+                    {6}\
+                </div>';
+        function render_cron(start_time, end_time, cpm_num_all, cpc_num_all){
+            var html = "";
+
+            var days = parseInt((end_time - start_time) / (3600 * 24 * 1000));
+            var kk = 0;
+            var end_time_c = end_time - days * 3600 * 24 * 1000;
+            var now = new Date();
+
+            for(var ii = start_time; ii < end_time; ii += 3600 * 24 * 1000){
+                
+                jj = end_time_c + kk * 3600 * 24 * 1000;
+                console.log(jj);
+                console.log(now);
+                console.log(parseInt(jj / 3600 * 24 * 1000));
+                console.log(parseInt(jj / 3600 * 24 * 1000));
+                
+                var isdisable = parseInt(jj / (3600 * 24 * 1000)) < parseInt(now / (3600 * 24 * 1000)) ? "disabled" : "";
+                var close_btn = jj < now ? "" : '<a class="glyphicon glyphicon-remove close_item" ></a>';
+                html += s.format((new Date(ii)).Format("hh:mm:ss"), (new Date(jj)).Format("hh:mm:ss"), parseInt(cpm_num_all / days), 
+                        parseInt(cpc_num_all / days), (new Date(jj)).Format("yyyy-MM-dd"), isdisable, close_btn, ii)
+                // console.log(html);
+                kk ++
+            }
+            $(".gen_out_wrapper").html(html)
+            setTimeout(function(){
+                bind_close_item()
+            }, 10)
+        }
+
+        function render_cron_from_data(data){
+            var html = "";
+            var now = new Date();
+            for(var ii in data){
+                jj = Date.parse(data[ii]['end_time']);
+                var isdisable = parseInt(jj / (3600 * 24 * 1000)) < parseInt(now / (3600 * 24 * 1000)) ? "disabled" : "";
+                var close_btn = jj < now ? "" : '<a class="glyphicon glyphicon-remove close_item" ></a>';
+                html += s.format((new Date(data[ii]['start_time'])).Format("hh:mm:ss"), (new Date(data[ii]['end_time'])).Format("hh:mm:ss"), data[ii]['cpm_num'], 
+                        data[ii]['cpc_num'], data[ii]['date'], isdisable, close_btn, ii)
+                // console.log(html);
+            }
+            $(".gen_out_wrapper").html(html)
+            setTimeout(function(){
+                bind_close_item()
+            }, 10)
+        }
+
+        function bind_close_item(){
+            $('.close_item').each(function(){
+                $(this).click(function(){
+                    $(this).parent().remove();
+                })
+            });
+        }
+        function show_time_error_alert(msg){
+            var html = '<div class="alert alert-success" role="alert">{0}</div>'.format(msg)
+            $(".gen_out_wrapper").html(html)
+            
+        }
+        
+    function toggle_upload(type, val){
+        if (type == 'banner') {
+            if(val){
+                $(".banner_wrapper").removeClass("hide")
+            }else{
+                $(".banner_wrapper").addClass('hide');
+            }
+        } else if (type == 'left_pull') {
+           if(val){
+                $(".icon_wrapper").removeClass("hide")
+            }else{
+                $(".icon_wrapper").addClass('hide');
+            }
+        }else if (type == 'lockscreen') {
+           if(val){
+                $(".lockscreen_wrapper").removeClass("hide")
+            }else{
+                $(".lockscreen_wrapper").addClass('hide');
+            }
+        }
+    }
+    $('.ad_pos').change(function(){
+        var type = $(this).val()
+        var val = $(this).prop("checked")
+        console.log(type);
+        
+        toggle_upload(type, val)
+    })
+
+
+    function edit_cpm_num(obj) {
+        var str = obj.innerHTML;
+        var num = str.length -11;
+        $('#ad_id').val(obj.getAttribute('ad_id'));
+        $('#edit_cpm').val(str.substr(0, num));
+        $('#modal_edit_cpm').modal('show');
+    }  
+    function edit_cpc_num(obj) {
+        var str = obj.innerHTML;
+        var num = str.length -11;
+
+        $('#ad_id1').val(obj.getAttribute('ad_id'));
+        $('#edit_cpc').val(str.substr(0, num));
+        $('#modal_edit_cpc').modal('show');
+    } 
+    $('#submit_cpm').click(function(e){
+        e.preventDefault();
+        var url = 'http://' + location.host + '/admin/ad_cpc/edit_cron_cpm';
+        var info = {
+            'ad_id' : $('#ad_id').val(),
+            'cpm_num' : $('#edit_cpm').val(),
+        }
+
+        edit_ajax_get(info, url, $('#modal_edit_cpm'));
+    });
+    $('#submit_cpc').click(function(e){
+        debugger
+        e.preventDefault();
+        var url = 'http://' + location.host + '/admin/ad_cpc/edit_cron_cpc';
+        var info = {
+            'ad_id' : $('#ad_id1').val(),
+            'cpc_num' : $('#edit_cpc').val(),
+        }
+        
+        // console.log(info);
+
+        edit_ajax_get(info, url, $('#modal_edit_cpc'));
+    });
+
+    function edit_ajax_get(data, url, obj){
+        $.ajax({
+            type : 'get',
+            url : url,
+            data : data,
+            dataType : 'json',
+            success : function (msg){
+                if (typeof(msg) != "object") {
+                    msg = JSON.parse(msg)
+                }
+                if (msg.code == '0 ') {
+                    showAlert(msg.message, 'success');
+                    refreshTable();
+                    obj.modal('hide')
+                } else {
+                    showAlert(msg.message, 'error');
+                    
+                }
+
+            },
+            error : function(){
+                showAlert('请求失败', 'error');
+            }
+        })
+    }
+    </script>
+
+</body>
+
+</html>

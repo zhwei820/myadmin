@@ -10,7 +10,6 @@
     <input name="next" type="hidden" value="{{ redirect_to }}" />
     <input id="setlang-id_language" name="language" type="hidden" value="{{ LANGUAGE_CODE }}" />
   </form>
-  <div>{{LANGUAGE_CODE}}</div>
   <ul id="g-setlang-menu" class="dropdown-menu" role="menu">
 
     {% get_language_info_list for LANGUAGES as languages %}

@@ -180,7 +180,7 @@
             <input type="button" class="btn btn-primary" id="generate_cron" value="生成">\
             </div></div>'
             a.addClass("inline-block")
-            a.append(s)
+            a.after(s)
         }
     }
 

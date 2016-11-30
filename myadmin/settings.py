@@ -39,7 +39,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-
 ENABLE_XADMIN_THEME = True
 
 ALLOWED_HOSTS = '*'
@@ -52,7 +51,7 @@ TIME_ZONE = 'GMT'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'zh-cn'
+LANGUAGE_CODE = 'zh-hans'
 
 LANGUAGES = (
     # ('de', gettext_noop('German')),

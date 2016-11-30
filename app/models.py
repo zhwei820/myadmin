@@ -23,6 +23,23 @@ AD_STATUS_CHOICES = (
     (3, "下线"),
 )
 
+from multiselectfield import MultiSelectField
+# models.MultiSelectField = MultiSelectField
+
+# ...
+
+MY_CHOICES = (('item_key1', 'Item title 1.1'),
+              ('item_key2', 'Item title 1.2'),
+              ('item_key3', 'Item title 1.3'),
+              ('item_key4', 'Item title 1.4'),
+              ('item_key5', 'Item title 1.5'))
+
+MY_CHOICES2 = ((1, '大图广告'),
+               (2, '首页banner'),
+               (3, '特惠banner'),
+               (4, '右拉banner'),
+               (5, '列表页'))
+
 
 class Ads(models.Model):
     name = models.CharField(max_length=256)
@@ -34,6 +51,10 @@ class Ads(models.Model):
                                              'lines')
     cpm_num_all = models.IntegerField(default=0)
     cpc_num_all = models.IntegerField(default=0)
+    my_field = MultiSelectField(choices=MY_CHOICES)
+    my_field2 = MultiSelectField(choices=MY_CHOICES2,
+                                 max_choices=10,
+                                 max_length=10)
     start_time = models.DateTimeField(u"开始时间")
     end_time = models.DateTimeField(u"结束时间")
     status = models.SmallIntegerField(

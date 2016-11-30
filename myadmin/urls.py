@@ -1,7 +1,6 @@
 from django.conf.urls import include, url
 from django.conf import settings
 from django.views.static import serve as serve_media
-
 # Uncomment the next two lines to enable the admin:
 import xadmin
 xadmin.autodiscover()

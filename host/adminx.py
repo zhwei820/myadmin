@@ -24,6 +24,7 @@ class IDCAdmin(object):
         ('Seocnd Form', ('contact', 'telphone', 'address')),
         ('Thread Form', ('customer_id',))
     ]
+    model_icon = 'fa fa-bookmark'
 
     search_fields = ['name']
     relfield_style = 'fk-ajax'
@@ -40,6 +41,8 @@ class CommentInline(object):
     style = 'tab'
 
 class HostAdmin(object):
+    model_icon = 'fa fa-cog'
+
     def open_web(self, instance):
         return "<a href='http://%s' target='_blank'>Open</a>" % instance.ip
     open_web.short_description = "Acts"
@@ -113,10 +116,12 @@ class HostGroupAdmin(object):
 
     search_fields = ['name']
     style_fields = {'hosts': 'checkbox-inline'}
+    model_icon = 'fa fa-music'
 
 class MaintainLogAdmin(object):
     list_display = ('host', 'maintain_type', 'hard_type', 'time', 'operator', 'note')
     list_display_links = ('host',)
+    model_icon = 'fa fa-flag'
 
     list_filter = ['host', 'maintain_type', 'hard_type', 'time', 'operator']
     search_fields = ['note']
@@ -142,6 +147,8 @@ class MaintainLogAdmin(object):
     reversion_enable = True
 
 class AccessRecordAdmin(object):
+    model_icon = 'fa fa-filter'
+
     def avg_count(self, instance):
         return int(instance.view_count/instance.user_count)
     avg_count.short_description = "Avg Count"

@@ -213,3 +213,6 @@ LOGGING = {
         # }
     }
 }
+
+XADMIN_TITLE = "管理后台而已"
+XADMIN_FOOTER_TITLE = "我的公司"

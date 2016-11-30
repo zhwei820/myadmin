@@ -20,11 +20,12 @@ class TimeIntervalsInline(object):
 
 
 class AdsAdmin(object):
+    model_icon = 'fa fa-beer'
+
     search_fields = ('name', 'code')
     list_display = ('id', 'name', 'code', 'start_time', 'end_time', 'status')
 
     inlines = (TimeIntervalsInline,)
-    model_icon = 'flag'
 
     actions = ("enable", "disable")
 
@@ -63,7 +64,7 @@ class ContinentAdmin(object):
         'utime',
     )
     inlines = (CountryInline,)
-    model_icon = 'globe'
+    model_icon = 'fa fa-flask'
 
     def head_img(self, obj):
         res = Continent.objects.filter(id=obj.id)
@@ -92,7 +93,7 @@ class CountryAdmin(object):
     list_filter = ('continent',)
 
     inlines = (CityInline,)
-    model_icon = 'flag'
+    model_icon = 'fa fa-bell'
 
     form_layout = (
         TabHolder(
@@ -147,7 +148,7 @@ class KitchenSinkAdmin(object):
     list_filter = ('choices', 'date', 'country')
     readonly_fields = ('readonly_field',)
     raw_id_fields = ('raw_id_field',)
-    model_icon = 'briefcase'
+    model_icon = 'fa fa-bolt'
     form_layout = (
         Main(
             Fieldset(None,
@@ -188,43 +189,4 @@ class KitchenSinkAdmin(object):
     list_display = (
         'name', 'help_text', 'choices', 'horizontal_choices', 'boolean')
 
-
 xadmin.site.register(KitchenSink, KitchenSinkAdmin)
-
-# Override auth admins
-from django.contrib.auth.models import User
-from xadmin.plugins.auth import UserAdmin, AdminPasswordChangeForm, PasswordChangeForm, ChangePasswordView, ChangeAccountPasswordView
-
-
-class DemoUserAdmin(UserAdmin):
-    actions = None
-
-    def save_models(self):
-        pass
-
-    def delete_model(self):
-        pass
-
-xadmin.site.unregister(User)
-xadmin.site.register(User, DemoUserAdmin)
-
-
-class UnAdminPasswordChangeForm(AdminPasswordChangeForm):
-
-    def save(self, commit=True):
-        pass
-
-
-class UnPasswordChangeForm(PasswordChangeForm):
-
-    def save(self, commit=True):
-        pass
-xadmin.site.register(ChangePasswordView,
-                     change_password_form=UnAdminPasswordChangeForm)
-xadmin.site.register(ChangeAccountPasswordView,
-                     change_password_form=UnPasswordChangeForm)
-
-# Rewrite login view
-xadmin.site.register(views.LoginView,
-                     login_template="xadmin/views/demo_login.html"
-                     )

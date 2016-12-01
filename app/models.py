@@ -24,9 +24,6 @@ AD_STATUS_CHOICES = (
 )
 
 from multiselectfield import MultiSelectField
-# models.MultiSelectField = MultiSelectField
-
-# ...
 
 MY_CHOICES = (('item_key1', 'Item title 1.1'),
               ('item_key2', 'Item title 1.2'),
@@ -289,3 +286,24 @@ class ReversionedItem(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class ZUser(models.Model):
+    uid = models.AutoField(primary_key=True)
+    pnum = models.BigIntegerField(unique=True)
+    pnum_md5 = models.CharField(max_length=32)
+    password = models.CharField(max_length=32)
+    status = models.IntegerField()
+    device_id = models.CharField(unique=True, max_length=50)
+    imsi = models.CharField(max_length=50)
+    os_type = models.CharField(max_length=50)
+    ctime = models.DateTimeField()
+    register_ip = models.CharField(max_length=15)
+    invite_code = models.IntegerField()
+    channel = models.CharField(max_length=15, blank=True, null=True)
+    ulevel = models.IntegerField()
+    from_app = models.IntegerField()
+    update_time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'z_user'

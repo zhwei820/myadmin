@@ -10,7 +10,7 @@ from django.contrib import admin, messages
 from xadmin.plugins.inline import Inline
 
 from .models import Country, Continent, KitchenSink, Category, City, \
-    Microwave, Fridge, WysiwygEditor, ReversionedItem, TimeIntervals, AD_STATUS_CHOICES
+    Microwave, Fridge, WysiwygEditor, ReversionedItem, TimeIntervals, AD_STATUS_CHOICES, ZUser
 
 
 class TimeIntervalsInline(object):
@@ -190,3 +190,27 @@ class KitchenSinkAdmin(object):
         'name', 'help_text', 'choices', 'horizontal_choices', 'boolean')
 
 xadmin.site.register(KitchenSink, KitchenSinkAdmin)
+
+
+class ZUserAdmin(object):
+    model_icon = 'fa fa-fire'
+
+    search_fields = ('uid', 'pnum')
+    list_display = ("uid", "pnum", "pnum_md5", "password", "status", "device_id", "imsi", "os_type", "ctime", "register_ip", "invite_code", "channel", "ulevel", "from_app", "update_time")
+
+    actions = ("enable", "disable")
+
+    def enable(self, request, queryset):
+        queryset.update(status=1)
+        messages.success(request,
+                         '{0}上线成功: {1}'.format("", ""))
+    enable.short_description = "上线"
+
+    def disable(self, request, queryset):
+        queryset.update(status=3)
+        messages.success(request,
+                         '{0}下线成功: {1}'.format("", ""))
+    disable.short_description = "下线"
+
+
+xadmin.site.register(ZUser, ZUserAdmin)

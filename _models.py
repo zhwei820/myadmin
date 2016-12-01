@@ -10,44 +10,21 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-class AChannelSet(models.Model):
-    channel = models.CharField(unique=True, max_length=50)
-    parent_id = models.IntegerField()
-    weight = models.IntegerField()
-    status = models.IntegerField()
-    operator = models.CharField(max_length=50, blank=True, null=True)
-    utime = models.DateTimeField()
-    ctime = models.DateTimeField()
-    remark = models.CharField(max_length=200)
-    channel_type = models.CharField(max_length=10)
-    is_public = models.IntegerField()
+class AppAds(models.Model):
+    name = models.CharField(max_length=256)
+    code = models.CharField(max_length=2)
+    description = models.TextField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    cpm_num_all = models.IntegerField()
+    cpc_num_all = models.IntegerField()
+    status = models.SmallIntegerField()
+    my_field = models.CharField(max_length=49)
+    my_field2 = models.CharField(max_length=10)
 
     class Meta:
         managed = False
-        db_table = 'a_channel_set'
-
-
-class AMenu(models.Model):
-    type = models.CharField(max_length=20)
-    action = models.CharField(unique=True, max_length=20)
-    status = models.IntegerField()
-    name = models.CharField(max_length=50)
-    parent_id = models.IntegerField()
-    icon = models.CharField(max_length=50)
-
-    class Meta:
-        managed = False
-        db_table = 'a_menu'
-
-
-class AUserExtra(models.Model):
-    permission_str = models.TextField()
-    role = models.IntegerField()
-    user = models.ForeignKey('AuthUser', models.DO_NOTHING, unique=True)
-
-    class Meta:
-        managed = False
-        db_table = 'a_user_extra'
+        db_table = 'app_ads'
 
 
 class AppCategory(models.Model):
@@ -83,8 +60,8 @@ class AppContinent(models.Model):
     name = models.CharField(max_length=256)
     order = models.IntegerField()
     file = models.CharField(max_length=100)
-    ctime = models.DateTimeField()
     pay_status = models.SmallIntegerField()
+    ctime = models.DateTimeField()
     utime = models.DateTimeField()
 
     class Meta:
@@ -174,6 +151,18 @@ class AppReversioneditem(models.Model):
         db_table = 'app_reversioneditem'
 
 
+class AppTimeintervals(models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    cpm_num1 = models.IntegerField()
+    cpc_num1 = models.IntegerField()
+    ad = models.ForeignKey(AppAds, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'app_timeintervals'
+
+
 class AppWysiwygeditor(models.Model):
     name = models.CharField(max_length=64)
     redactor = models.TextField()
@@ -249,20 +238,6 @@ class AuthUserUserPermissions(models.Model):
         managed = False
         db_table = 'auth_user_user_permissions'
         unique_together = (('user', 'permission'),)
-
-
-class DjangoAdminLog(models.Model):
-    action_time = models.DateTimeField()
-    object_id = models.TextField(blank=True, null=True)
-    object_repr = models.CharField(max_length=200)
-    action_flag = models.SmallIntegerField()
-    change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'django_admin_log'
 
 
 class DjangoCommentFlags(models.Model):
@@ -420,127 +395,6 @@ class HostMaintainlog(models.Model):
         db_table = 'host_maintainlog'
 
 
-class OBanner(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
-    description = models.CharField(max_length=200, blank=True, null=True)
-    os_type = models.IntegerField(blank=True, null=True)
-    pic_url = models.CharField(max_length=200, blank=True, null=True)
-    click_url = models.CharField(max_length=500, blank=True, null=True)
-    ctime = models.DateTimeField(blank=True, null=True)
-    utime = models.DateTimeField(blank=True, null=True)
-    start_time = models.DateTimeField(blank=True, null=True)
-    end_time = models.DateTimeField(blank=True, null=True)
-    seq = models.IntegerField(blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
-    channel = models.TextField(blank=True, null=True)
-    channel_type = models.IntegerField()
-    open_type = models.CharField(max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'o_banner'
-
-
-class OUserBasic(models.Model):
-    uid = models.AutoField(primary_key=True)
-    ctime = models.DateTimeField()
-    channel = models.CharField(max_length=16)
-    os_type = models.CharField(max_length=8)
-    app_version = models.CharField(max_length=16)
-    package_name = models.CharField(max_length=30)
-    reg_ip = models.CharField(max_length=15)
-    invite_uid = models.IntegerField()
-    reg_source = models.CharField(max_length=2)
-    reg_qid = models.CharField(max_length=64)
-    bind_mobile = models.BigIntegerField()
-    status = models.IntegerField()
-    utime = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'o_user_basic'
-
-
-class OUserExtra(models.Model):
-    uid = models.IntegerField(primary_key=True)
-    reg_source = models.CharField(max_length=2)
-    reg_qid = models.CharField(max_length=64)
-    token = models.CharField(max_length=256)
-    ticket = models.CharField(max_length=256)
-    nickname = models.CharField(max_length=512)
-    gender = models.CharField(max_length=1)
-    figure_url = models.CharField(max_length=256)
-    figure_url_other = models.CharField(max_length=1000, blank=True, null=True)
-    province = models.CharField(max_length=64, blank=True, null=True)
-    city = models.CharField(max_length=64, blank=True, null=True)
-    country = models.CharField(max_length=64, blank=True, null=True)
-    year = models.IntegerField(blank=True, null=True)
-    point = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'o_user_extra'
-
-
-class OUserMsg00(models.Model):
-    uid = models.IntegerField()
-    info_title = models.CharField(max_length=50)
-    info_subtitle = models.CharField(max_length=64)
-    content = models.TextField()
-    share_msg = models.CharField(max_length=255)
-    info_time = models.DateTimeField()
-    info_type = models.IntegerField()
-    info_notify = models.IntegerField()
-    status = models.IntegerField()
-    end_time = models.DateTimeField()
-    click_url = models.CharField(max_length=300, blank=True, null=True)
-    button_text = models.CharField(max_length=40, blank=True, null=True)
-    url_images = models.CharField(max_length=500)
-    share_url = models.CharField(max_length=500)
-    category = models.CharField(max_length=20)
-    icon = models.CharField(max_length=500)
-    pid = models.IntegerField()
-    package_name = models.CharField(max_length=30)
-
-    class Meta:
-        managed = False
-        db_table = 'o_user_msg_00'
-
-
-class OVerifyLog(models.Model):
-    pnum = models.BigIntegerField()
-    device_id = models.CharField(max_length=50)
-    status = models.IntegerField()
-    code = models.CharField(max_length=6)
-    package_name = models.CharField(max_length=100, blank=True, null=True)
-    app_version = models.CharField(max_length=20, blank=True, null=True)
-    os_type = models.CharField(max_length=20, blank=True, null=True)
-    ctime = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'o_verify_log'
-
-
-class OVersion(models.Model):
-    version = models.CharField(max_length=15)
-    os_type = models.CharField(max_length=10)
-    ctime = models.DateTimeField()
-    what_news = models.TextField()
-    update_is_recommend = models.IntegerField()
-    update_is_force = models.IntegerField()
-    app_id = models.IntegerField()
-    dl_url = models.CharField(max_length=255)
-    channel = models.CharField(max_length=36)
-    status = models.IntegerField()
-    rate = models.CharField(max_length=11)
-
-    class Meta:
-        managed = False
-        db_table = 'o_version'
-        unique_together = (('version', 'os_type', 'app_id', 'channel'),)
-
-
 class ReversionRevision(models.Model):
     date_created = models.DateTimeField()
     comment = models.TextField()
@@ -564,17 +418,6 @@ class ReversionVersion(models.Model):
         managed = False
         db_table = 'reversion_version'
         unique_together = (('db', 'content_type', 'object_id', 'revision'),)
-
-
-class TDeviceUid(models.Model):
-    device_id = models.CharField(max_length=50, blank=True, null=True)
-    uid = models.IntegerField(blank=True, null=True)
-    ctime = models.DateTimeField(blank=True, null=True)
-    utime = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 't_device_uid'
 
 
 class XadminBookmark(models.Model):
@@ -624,3 +467,25 @@ class XadminUserwidget(models.Model):
     class Meta:
         managed = False
         db_table = 'xadmin_userwidget'
+
+
+class ZUser(models.Model):
+    uid = models.AutoField(primary_key=True)
+    pnum = models.BigIntegerField(unique=True)
+    pnum_md5 = models.CharField(max_length=32)
+    password = models.CharField(max_length=32)
+    status = models.IntegerField()
+    device_id = models.CharField(unique=True, max_length=50)
+    imsi = models.CharField(max_length=50)
+    os_type = models.CharField(max_length=50)
+    ctime = models.DateTimeField()
+    register_ip = models.CharField(max_length=15)
+    invite_code = models.IntegerField()
+    channel = models.CharField(max_length=15, blank=True, null=True)
+    ulevel = models.IntegerField()
+    from_app = models.IntegerField()
+    update_time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'z_user'

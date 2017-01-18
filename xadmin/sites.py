@@ -315,7 +315,7 @@ class AdminSite(object):
             urlpatterns += [
                     url(r'^%s/%s/' % ( model._meta.app_label, model._meta.model_name), include(view_urls))
                 ]
-
+        # print(urlpatterns)
         return urlpatterns
 
     @property

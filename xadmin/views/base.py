@@ -323,6 +323,47 @@ class CommAdminView(BaseAdminView):
     def get_site_menu(self):
         return None
 
+    def get_register_view(self):
+        nav_menu = OrderedDict()
+
+        for path, _, name in self.admin_site._registry_views:
+            l = name.split(":")
+            if len(l) != 2:
+                continue
+            print(name)
+            print(l)
+            app_label = l[0]
+            app_icon = None
+            model_dict = {
+                'title': l[1],
+                'url': path.strip("$").replace("^", "/"),
+                'icon': "",
+                'perm': "",
+                'order': '%s.%s_%s' % (l[0], l[1], 'view'),
+                
+            }
+            app_key = "app:%s" % app_label
+
+            if app_key in nav_menu:
+                nav_menu[app_key]['menus'].append(model_dict)
+            else:
+                # Find app title
+                app_title = unicode(app_label.title())
+                if app_label.lower() in self.apps_label_title:
+                    app_title = self.apps_label_title[app_label.lower()]
+                else:
+                    app_title = unicode(apps.get_app_config(app_label).verbose_name)
+                #find app icon
+                if app_label.lower() in self.apps_icons:
+                    app_icon = self.apps_icons[app_label.lower()]
+
+                nav_menu[app_key] = {
+                    'title': app_title,
+                    'menus': [model_dict],
+                }
+
+            return nav_menu
+
     @filter_hook
     def get_nav_menu(self):
         site_menu = list(self.get_site_menu() or [])
@@ -336,7 +377,7 @@ class CommAdminView(BaseAdminView):
                     get_url(m, had_urls)
         get_url({'menus': site_menu}, had_urls)
 
-        nav_menu = OrderedDict()
+        nav_menu = self.get_register_view()
 
         for model, model_admin in self.admin_site._registry.items():
             if getattr(model_admin, 'hidden_menu', False):

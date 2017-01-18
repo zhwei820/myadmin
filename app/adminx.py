@@ -214,3 +214,33 @@ class ZUserAdmin(object):
 
 
 xadmin.site.register(ZUser, ZUserAdmin)
+
+
+
+from django.views.generic import FormView
+from xadmin.views import ModelAdminView, CommAdminView
+from django.views.generic.edit import FormMixinBase
+from xadmin.sites import MergeAdminMetaclass
+from django.utils import six
+from django.template.response import TemplateResponse
+
+# class Metaclass(FormMixinBase, MergeAdminMetaclass):
+#     pass
+#     """Resolve conflito de metaclass"""
+
+# class MyModelView(six.with_metaclass(Metaclass, ModelAdminView, FormView):
+#     ""Custom admin view: Inherits two views that have metaclasses"
+
+
+class MyView(CommAdminView):
+    base_template = 'xadmin/base_site.html'
+    # @never_cache
+    def get(self, request, *_kwargs):
+        context = self.get_context()
+        return TemplateResponse(self.request, [
+        '500.html'
+        ], self.get_context(), current_app=self.admin_site.name)
+
+xadmin.site.register_view(r'^xadmin/welcome/$', MyView, name='app:MyView')
+
+# xadmin.site.register_view(r'^myapp/myapp/add/$', MyModelView, name='myapp_myapp_add')

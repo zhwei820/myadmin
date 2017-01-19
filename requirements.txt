@@ -10,6 +10,5 @@ mysql-python
 django-multiselectfield
 Pillow
 django-crispy-forms
-django_apscheduler
 APScheduler==3.0.5
 python-json-logger

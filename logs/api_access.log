@@ -187,3 +187,22 @@
 {"levelname": "INFO", "asctime": "2017-01-19 11:03:38,895", "process": 25312, "message": "apscheduler_add_job_over"}
 {"levelname": "INFO", "asctime": "2017-01-19 11:03:50,618", "process": 25338, "message": "scheduler_started"}
 {"levelname": "INFO", "asctime": "2017-01-19 11:03:50,642", "process": 25338, "message": "apscheduler_add_job_over"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:48:58,050", "process": 654, "message": "scheduler_started"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:48:58,126", "process": 654, "message": "apscheduler_add_job_over"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:49:03,598", "process": 663, "message": "scheduler_started"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:49:03,672", "process": 663, "message": "apscheduler_add_job_over"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:50:03,686", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:51:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:52:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:53:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:54:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:55:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:56:03,674", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:57:03,675", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:58:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 07:59:03,673", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 08:00:03,674", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 08:01:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 08:02:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 08:03:03,672", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}
+{"levelname": "INFO", "asctime": "2017-01-19 08:04:03,671", "process": 663, "message": "apscheduler_job_worked", "event": "cronjob"}

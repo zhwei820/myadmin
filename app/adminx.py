@@ -13,6 +13,50 @@ from .models import Country, Continent, KitchenSink, Category, City, \
     Microwave, Fridge, WysiwygEditor, ReversionedItem, TimeIntervals, AD_STATUS_CHOICES, ZUser
 
 
+class GlobalSetting(object):
+    apps_label_title = {
+        'app': u'应用管理',
+        'host': u'节点管理',
+        'site_letter': u'站内消息',
+        'analytics': u'统计分析',
+        'firmware': u'基础配置',
+        'wechat': u'微信服务',
+        'activity': u"活动",
+    }
+    # apps_icons = {"app": "fa fa-weixin",
+    #               "host": "fa fa-weixin",
+    #               "site_letter": "fa fa-envelope-square",
+    #               "analytics": "fa fa-bar-chart",
+    #               "firmware": "fa fa-cog",
+    #               "account": "fa fa-user",
+    #               "redisboard": "fa fa-database",
+    #               "authtoken": "fa fa-key",
+    #               "admin": "fa fa-circle",
+    #               'activity': "fa fa-dot-circle-o",
+    #               }
+    menu_style = 'accordion'  # 'default'
+
+    # def get_site_menu(self):
+    #     return (
+    #         {'title': '客服查询', 'icon': 'fa fa-question',
+    #          'menus': (
+    #              {'title': '基本信息', 'perm': self.get_model_perm(User, 'view'),
+    #               'url': self.get_model_url(User,
+    #                                         'changelist')},
+    #              {'title': '提现记录', 'perm': self.get_model_perm(PresentExchangeLog, 'view'),
+    #               'url': self.get_model_url(PresentExchangeLog,
+    #                                         'changelist')},
+    #              {'title': '任务信息', 'perm': self.get_model_perm(AtmTask, 'view'),
+    #               'url': self.get_model_url(AtmTask,
+    #                                         'changelist')},
+    #          )},
+    #     )
+
+xadmin.site.register(views.CommAdminView, GlobalSetting)
+
+
+
+
 class TimeIntervalsInline(object):
     model = TimeIntervals
     extra = 0

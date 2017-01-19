@@ -64,7 +64,7 @@ class Ads(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name_plural = "Ads"
+        verbose_name_plural = "广告"
         verbose_name = "广告"
 
 
@@ -99,6 +99,8 @@ class Continent(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = u"大洲"
+        verbose_name_plural = "大洲"
 
     def save(self, force_insert=False, force_update=False, using=None):
         return super(Continent, self).save(force_insert, force_update, using)
@@ -124,7 +126,8 @@ class Country(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name_plural = "Countries"
+        verbose_name = u"国家"
+        verbose_name_plural = "国家"
 
 
 TYPE_CHOICES = ((1, 'Awesome'), (2, 'Good'), (3, 'Normal'), (4, 'Bad'))
@@ -265,8 +268,9 @@ class City(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = "Cities (django-select2)"
         unique_together = ('name', 'country')
+        verbose_name = u"城市"
+        verbose_name_plural = "城市"
 
 
 class WysiwygEditor(models.Model):

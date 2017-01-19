@@ -5,7 +5,6 @@ from . import models
 
 
 class ContinentAdmin(admin.ModelAdmin):
-
     list_display = (
         u'id',
         'name',

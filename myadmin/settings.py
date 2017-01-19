@@ -213,6 +213,13 @@ LOGGING = {
             'formatter': 'json',
             'when': 'midnight',
         },
+        'cron_file_log': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_PATH, "api_cron.log"),
+            'formatter': 'json',
+            'when': 'midnight',
+        },
         'error_file_log': {
             'level': 'ERROR',
             'class': 'logging.handlers.TimedRotatingFileHandler',
@@ -226,6 +233,10 @@ LOGGING = {
             'handlers': ['access_file_log'],
             'level': 'DEBUG' if DEBUG else 'INFO',
         },
+        'cron': {
+            'handlers': ['cron_file_log'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+        },
         'error': {
             'handlers': ['error_file_log'],
             'level': 'ERROR',
@@ -233,37 +244,6 @@ LOGGING = {
     }
 }
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'filters': {
-#         'require_debug_false': {
-#             '()': 'django.utils.log.RequireDebugFalse'
-#         }
-#     },
-#     'handlers': {
-#         'mail_admins': {
-#             'level': 'ERROR',
-#             'filters': ['require_debug_false'],
-#             'class': 'django.utils.log.AdminEmailHandler'
-#         },
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler'
-#         },
-#     },
-#     'loggers': {
-#         'django.request': {
-#             'handlers': ['mail_admins'],
-#             'level': 'ERROR',
-#             'propagate': True,
-#         },
-#         # 'django.db.backends': {
-#         #     'handlers': ['console'],
-#         #     'level': 'DEBUG',
-#         # }
-#     }
-# }
 
 XADMIN_TITLE = "管理后台而已"
 XADMIN_FOOTER_TITLE = "我的公司"

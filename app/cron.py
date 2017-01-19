@@ -19,7 +19,7 @@ from django.core.files import File
 # from wechat.models import WechatCustomMessage
 # from wechat_sdk.basic import WechatBasic
 
-logger = logging.getLogger("default")
+logger = logging.getLogger("cron")
 
 def cronjob():
     logger.info("lalalalalala")

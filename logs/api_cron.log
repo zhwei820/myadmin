@@ -1,0 +1,4 @@
+{"levelname": "INFO", "asctime": "2017-01-19 09:17:00,238", "process": 17275, "message": "scheduler_started"}
+{"levelname": "INFO", "asctime": "2017-01-19 09:17:00,279", "process": 17275, "message": "apscheduler_add_job_over"}
+{"levelname": "INFO", "asctime": "2017-01-19 09:19:04,017", "process": 17510, "message": "lalalalalala"}
+{"levelname": "INFO", "asctime": "2017-01-19 09:20:03,990", "process": 17510, "message": "lalalalalala"}

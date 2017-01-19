@@ -3,7 +3,6 @@ from django.contrib import admin
 
 from . import models
 
-
 class ContinentAdmin(admin.ModelAdmin):
     list_display = (
         u'id',

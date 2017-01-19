@@ -162,11 +162,11 @@ class AccessRecordAdmin(object):
     actions = None
     aggregate_fields = {"user_count": "sum", 'view_count': "sum"}
 
-    refresh_times = (3, 5, 10)
-    data_charts = {
-        "user_count": {'title': u"User Report", "x-field": "date", "y-field": ("user_count", "view_count"), "order": ('date',)},
-        "avg_count": {'title': u"Avg Report", "x-field": "date", "y-field": ('avg_count',), "order": ('date',)}
-    }
+    # refresh_times = (3, 5, 10)
+    # data_charts = {
+    #     "user_count": {'title': u"User Report", "x-field": "date", "y-field": ("user_count", "view_count"), "order": ('date',)},
+    #     "avg_count": {'title': u"Avg Report", "x-field": "date", "y-field": ('avg_count',), "order": ('date',)}
+    # }
 
 xadmin.site.register(Host, HostAdmin)
 xadmin.site.register(HostGroup, HostGroupAdmin)

@@ -200,6 +200,7 @@ class ZUserAdmin(object):
     list_display = ("uid", "pnum", "pnum_md5", "password", "status", "device_id", "imsi", "os_type", "ctime", "register_ip", "invite_code", "channel", "ulevel", "from_app", "update_time")
 
     actions = ("enable", "disable")
+    aggregate_fields = {"status": "sum"}
 
     def enable(self, request, queryset):
         queryset.update(status=1)

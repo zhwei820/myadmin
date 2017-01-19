@@ -4,8 +4,8 @@ from host.models import *
 from app.models import *
 
 class Base(Settings):
-    enable_themes = True
-    use_bootswatch = True
+    # enable_themes = True
+    # use_bootswatch = True
 
 class Comm(Settings):
     menu_style = 'accordion'

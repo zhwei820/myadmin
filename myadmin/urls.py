@@ -48,7 +48,7 @@ if True:
         port = "".join([time.strftime("%y%m"), "9"])
         sock.bind(("127.0.0.1", int(port)))
     except socket.error:
-        logger.info("scheduler_already_started, DO NOTHING")
+        logger.info("scheduler_already_started, DO NOTHING")  # 避免执行多次
     else:
         if True:
             logger.info("scheduler_started")

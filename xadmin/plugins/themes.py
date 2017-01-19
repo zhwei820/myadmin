@@ -17,7 +17,7 @@ class ThemePlugin(BaseAdminPlugin):
     # {'name': 'Blank Theme', 'description': '...', 'css': 'http://...', 'thumbnail': '...'}
     user_themes = None
     use_bootswatch = False
-    default_theme = static('xadmin/css/themes/bootstrap-xadmin.css')
+    default_theme = static('xadmin/css/themes/lumen-bootstrap.min.css')
     bootstrap2_theme = static('xadmin/css/themes/bootstrap-theme.css')
 
     def init_request(self, *args, **kwargs):

@@ -196,6 +196,7 @@ class ZUserAdmin(object):
     model_icon = 'fa fa-fire'
 
     search_fields = ('uid', 'pnum')
+    list_editable = ("pnum", )
     list_display = ("uid", "pnum", "pnum_md5", "password", "status", "device_id", "imsi", "os_type", "ctime", "register_ip", "invite_code", "channel", "ulevel", "from_app", "update_time")
 
     actions = ("enable", "disable")

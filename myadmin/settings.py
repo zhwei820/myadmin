@@ -9,6 +9,7 @@ import os.path
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+from pythonjsonlogger import jsonlogger
 
 from decouple import config
 import dj_database_url
@@ -172,8 +173,11 @@ INSTALLED_APPS = (
     'app',
     'host',
     
-    # 'django_admin_generator',
+    'django_apscheduler',
 )
+
+
+LOGGING_PATH = os.path.join(PROJECT_ROOT, "logs")
 
 
 # A sample logging configuration. The only tangible logging
@@ -181,37 +185,85 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+# 日志依赖于settings 生效,放到最后面
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'json': {
+            '()': jsonlogger.JsonFormatter,
+            'fmt': '%(levelname)s %(asctime)s %(process)d %(message)s',
+            # 'format': '[%(asctime)s] %(levelname)s: %(message)s',
+        },
+        'verbose': {
+            'format': '[%(asctime)s] %(levelname)s: %(message)s'
+        },
+        'error': {
+            '()': jsonlogger.JsonFormatter,
+            'fmt': '%(levelname)s %(asctime)s %(module)s %(process)d %(message)s %(pathname)s $(lineno)d $(funcName)s',
+        },
+    },
     'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
     },
     'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+        'access_file_log': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_PATH, "api_access.log"),
+            'formatter': 'json',
+            'when': 'midnight',
         },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler'
+        'error_file_log': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGGING_PATH, "api_error.log"),
+            'formatter': 'verbose',
+            'when': 'midnight',
         },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+        'default': {
+            'handlers': ['access_file_log'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
         },
-        # 'django.db.backends': {
-        #     'handlers': ['console'],
-        #     'level': 'DEBUG',
-        # }
+        'error': {
+            'handlers': ['error_file_log'],
+            'level': 'ERROR',
+        }
     }
 }
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'filters': {
+#         'require_debug_false': {
+#             '()': 'django.utils.log.RequireDebugFalse'
+#         }
+#     },
+#     'handlers': {
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'filters': ['require_debug_false'],
+#             'class': 'django.utils.log.AdminEmailHandler'
+#         },
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler'
+#         },
+#     },
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['mail_admins'],
+#             'level': 'ERROR',
+#             'propagate': True,
+#         },
+#         # 'django.db.backends': {
+#         #     'handlers': ['console'],
+#         #     'level': 'DEBUG',
+#         # }
+#     }
+# }
 
 XADMIN_TITLE = "管理后台而已"
 XADMIN_FOOTER_TITLE = "我的公司"
